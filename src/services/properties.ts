@@ -1,4 +1,3 @@
-// src/services/properties.ts
 import api from '@/config/http'
 import { Property } from '@/type/property.type'
 
