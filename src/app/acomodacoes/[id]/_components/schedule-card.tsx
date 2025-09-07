@@ -22,7 +22,7 @@ export function ScheduleCard(property: Property) {
   })
 
   return (
-    <div className="sticky top-14 w-full max-w-80 rounded-xl border p-4 shadow-md">
+    <div className="sticky top-14 h-fit w-full max-w-80 rounded-xl border p-6">
       <div className="flex flex-col gap-3">
         <Popover>
           <PopoverTrigger asChild>

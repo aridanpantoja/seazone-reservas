@@ -4,6 +4,7 @@ import '@/assets/styles/globals.css'
 import { cn } from '@/lib/utils'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { Toaster } from '@/components/ui/sonner'
 
 export const metadata: Metadata = {
   title: 'Seazone Reservas',
@@ -20,10 +21,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={cn('bg-background antialiased', inter.className)}>
-        <div className="flex min-h-screen flex-col">
+        <div className="flex h-full min-h-screen flex-col">
           <Navbar />
-          <div className="flex-1">{children}</div>
+          <div className="h-full flex-1">{children}</div>
           <Footer />
+          <Toaster />
         </div>
       </body>
     </html>

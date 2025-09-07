@@ -34,12 +34,12 @@ export function Navbar() {
     >
       <WidthWrapper>
         <nav className="relative flex h-24 w-full flex-wrap items-center justify-between gap-6 transition-all group-data-[scrolled=true]:h-18">
-          <div className="flex w-full items-center justify-between gap-12 lg:w-full">
+          <div className="flex w-full items-center justify-between gap-2 lg:w-full">
             <Link aria-label="Home" href="/">
               <Icons.logo />
             </Link>
 
-            <div className="absolute left-1/2 -translate-x-1/2">
+            <div className="static left-1/2 ml-auto translate-x-0 lg:absolute lg:-translate-x-1/2">
               <SearchForm expanded={!scrolled} />
             </div>
 

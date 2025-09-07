@@ -8,7 +8,11 @@ export async function getProperties(
   return response.data
 }
 
-export async function getPropertyById(id: number): Promise<Property> {
-  const response = await api.get<Property>(`/properties/${id}`)
-  return response.data
+export async function getPropertyById(id: number): Promise<Property | null> {
+  try {
+    const response = await api.get<Property>(`/properties/${id}`)
+    return response.data
+  } catch {
+    return null
+  }
 }

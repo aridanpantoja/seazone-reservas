@@ -13,14 +13,14 @@ export function Gallery({ property }: { property: Property }) {
     null,
   )
 
-  const images = [property.images[1], property.images[0], property.images[1]]
+  const galleryImages = property.images
 
   return (
     <>
       <div
         className={cn(
-          'relative grid max-h-[600px] rounded-2xl',
-          images.length > 1 ? 'gap-2 md:grid-cols-2' : 'grid-cols-1',
+          'relative grid max-h-[500px] grid-cols-1 overflow-hidden rounded-2xl',
+          galleryImages.length > 1 && 'gap-2 md:grid-cols-2',
         )}
       >
         <button
@@ -28,10 +28,10 @@ export function Gallery({ property }: { property: Property }) {
           onClick={() => setCurrentImageIndex(0)}
         >
           <Image
-            src={images[0]}
+            src={galleryImages[0]}
             alt={property.title}
             priority={true}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
             width={1000}
             height={1000}
           />
@@ -40,17 +40,17 @@ export function Gallery({ property }: { property: Property }) {
         <div
           className={cn(
             'hidden h-full',
-            images.length === 1 && 'hidden',
-            images.length === 2 && 'flex-col gap-2 md:flex',
-            images.length > 2 && 'grid-cols-2 gap-2 md:grid',
+            galleryImages.length === 1 && 'hidden',
+            galleryImages.length === 2 && 'flex-col gap-2 md:flex',
+            galleryImages.length > 2 && 'grid-cols-2 gap-2 md:grid',
           )}
         >
-          {images.map((image, index) => (
+          {galleryImages.slice(1, 6).map((image, index) => (
             <button
               key={index}
               className={cn(
                 'relative h-full w-full',
-                images.length === 3 && index === 0 && 'col-span-2',
+                galleryImages.length === 3 && index === 0 && 'col-span-2',
               )}
               onClick={() => setCurrentImageIndex(index + 1)}
             >

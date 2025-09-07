@@ -1,18 +1,19 @@
+import { Amenitie } from '@/components/amenitie'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { Share2 } from 'lucide-react'
 import type { Metadata, ResolvingMetadata } from 'next'
-import { Share } from 'next/font/google'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { WidthWrapper } from '../../../components/width-wrapper'
 import { getProperties, getPropertyById } from '../../../services/properties'
 import type { Property } from '../../../type/property.type'
-import { Heart, Share2 } from 'lucide-react'
 import { Gallery } from './_components/gallery'
 import { ScheduleCard } from './_components/schedule-card'
-import { Amenitie } from '@/components/amenitie'
+import { ShareButton } from '@/components/share-button'
+import AccommodationLoading from './loading'
 
 type AccommodationPageProps = {
   params: Promise<{ id: number }>
+  searchParams: Promise<{ checkin: string; checkout: string; hospedes: number }>
 }
 
 export async function generateStaticParams() {
@@ -24,24 +25,25 @@ export async function generateStaticParams() {
 
 export default async function AccommodationPage({
   params,
+  searchParams,
 }: AccommodationPageProps) {
   const { id } = await params
   const property = await getPropertyById(id)
+  const { checkin, checkout, hospedes } = await searchParams
 
   if (!property) {
     notFound()
   }
 
+  console.log(checkin, checkout, hospedes)
+
   return (
     <section className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-2xl font-bold">{property.title}</h1>
+        <h1 className="text-xl font-bold md:text-2xl">{property.title}</h1>
 
         <div className="flex items-center justify-center gap-2">
-          <Button variant="outline">
-            <Share2 />
-            Compartilhar
-          </Button>
+          <ShareButton />
         </div>
       </div>
 
@@ -62,9 +64,15 @@ export default async function AccommodationPage({
           </div>
 
           <div className="space-y-4">
+            <h2 className="text-xl font-bold">Descrição</h2>
+
+            <p className="text-muted-foreground">Adicionar descrição</p>
+          </div>
+
+          <div className="space-y-8">
             <h2 className="text-xl font-bold">Comodidades</h2>
 
-            <ul className="text-muted-foreground grid grid-cols-3 gap-6">
+            <ul className="text-muted-foreground grid grid-cols-2 gap-6 sm:grid-cols-3">
               {property.amenities.slice(0, 6).map((amenity) => (
                 <li key={amenity} className="flex items-center gap-2">
                   <Amenitie
@@ -76,6 +84,13 @@ export default async function AccommodationPage({
                 </li>
               ))}
             </ul>
+
+            <Button
+              variant="outline"
+              className={cn(property.amenities.length <= 6 && 'hidden')}
+            >
+              Ver todas as comodidades
+            </Button>
           </div>
         </div>
 
@@ -93,6 +108,12 @@ export async function generateMetadata(
   const property = await getPropertyById(id)
 
   const previousImages = (await parent).openGraph?.images || []
+
+  if (!property) {
+    return {
+      title: 'Acomodação não encontrada',
+    }
+  }
 
   return {
     title: property.title,
