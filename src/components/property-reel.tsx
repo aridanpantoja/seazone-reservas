@@ -1,17 +1,19 @@
 import Image from 'next/image'
 import { getProperties } from '../services/properties'
-import type { PropertiesFilters } from '../type/property.type'
+import type { PropertiesFilters, Property } from '../type/property.type'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { Check, CircleX, Star, X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDateForURL } from '@/lib/utils'
+import { ImageSlider } from './image-slider'
 
 type PropertyReelProps = {
   title?: string
   subtitle?: string
   link?: string
   filters?: PropertiesFilters
+  initialProperties?: Property[]
 }
 
 export async function PropertyReel({
@@ -19,8 +21,9 @@ export async function PropertyReel({
   filters,
   subtitle,
   link,
+  initialProperties,
 }: PropertyReelProps) {
-  const properties = await getProperties(filters)
+  const properties = initialProperties || (await getProperties(filters))
 
   return (
     <section className="flex flex-col gap-4">
@@ -56,16 +59,10 @@ export async function PropertyReel({
               className="space-y-3 overflow-hidden rounded-xl"
               target="_blank"
               aria-label={property.title}
+              id={`property-${property.id}`}
             >
               <div className="relative block w-full overflow-hidden rounded-xl">
-                <Image
-                  src={property.images[0]}
-                  alt={property.title}
-                  width={500}
-                  height={500}
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
+                <ImageSlider urls={property.images} />
 
                 <Badge
                   variant={property.isAvailable ? 'secondary' : 'default'}

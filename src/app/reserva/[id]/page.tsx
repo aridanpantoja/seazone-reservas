@@ -7,19 +7,21 @@ import { ScheduleForm } from './_components/schedule-form'
 
 type AccommodationPageProps = {
   params: Promise<{ id: number }>
-}
-
-export async function generateStaticParams() {
-  const properties: Property[] = await getProperties()
-  return properties.map((property) => ({
-    id: property.id.toString(),
-  }))
+  searchParams: Promise<{
+    checkin?: string
+    checkout?: string
+    adultos?: number
+    criancas?: number
+  }>
 }
 
 export default async function AccommodationPage({
   params,
+  searchParams,
 }: AccommodationPageProps) {
   const { id } = await params
+  const { checkin, checkout, adultos, criancas } = await searchParams
+
   const property = await getPropertyById(id)
 
   if (!property) {
@@ -27,16 +29,37 @@ export default async function AccommodationPage({
   }
 
   return (
-    <WidthWrapper className="max-w-screen-lg">
-      <main className="py-10">
+    <WidthWrapper className="max-w-screen-xl">
+      <main className="space-y-8 py-10">
         <section>
-          <h1 className="text-2xl font-bold">Reserva {property.title}</h1>
+          <h1 className="text-4xl font-bold">Reservar</h1>
+        </section>
 
-          <div className="flex flex-col gap-4">
+        <section className="grid grid-cols-2 gap-8">
+          <div>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <h2 className="text-lg font-bold">Detalhes da reserva</h2>
+
+                <ScheduleForm
+                  property={property}
+                  checkin={checkin}
+                  checkout={checkout}
+                  adultos={adultos}
+                  criancas={criancas}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-muted rounded-lg border p-4">
+            <h2 className="text-lg font-bold">Detalhes da reserva</h2>
+
             <div className="flex flex-col gap-2">
-              <h2 className="text-lg font-bold">Detalhes da reserva</h2>
-
-              <ScheduleForm {...property} />
+              <p>Check-in: {checkin}</p>
+              <p>Check-out: {checkout}</p>
+              <p>Adultos: {adultos}</p>
+              <p>Crianças: {criancas}</p>
             </div>
           </div>
         </section>

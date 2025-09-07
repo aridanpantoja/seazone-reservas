@@ -8,14 +8,19 @@ export async function createBookingAction(
   propertyId: number,
 ) {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     const parsedData = await scheduleFormSchema.safeParse(data)
+
+    console.log('parsedData', parsedData.error?.message)
 
     if (!parsedData.success) {
       return {
         success: false,
-        message: 'Dados inválidos',
+        message: parsedData.error.message,
       }
     }
+
+    console.log(parsedData.data)
 
     const { range, guests } = parsedData.data
 
@@ -28,9 +33,13 @@ export async function createBookingAction(
       customerEmail: 'john.doe@example.com',
     })
 
+    console.log(response)
+
     if (!response) {
       throw new Error('Erro ao criar reserva')
     }
+
+    console.log('Reserva criada com sucesso')
 
     return {
       success: true,

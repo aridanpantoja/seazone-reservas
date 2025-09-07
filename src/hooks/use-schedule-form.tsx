@@ -9,19 +9,29 @@ import { toast } from 'sonner'
 
 type UseScheduleFormProps = {
   propertyId: number
+  checkin?: string
+  checkout?: string
+  adultos?: number
+  criancas?: number
 }
 
-export function useScheduleForm({ propertyId }: UseScheduleFormProps) {
+export function useScheduleForm({
+  propertyId,
+  checkin,
+  checkout,
+  adultos,
+  criancas,
+}: UseScheduleFormProps) {
   const form = useForm<ScheduleFormSchema>({
     resolver: zodResolver(scheduleFormSchema),
     defaultValues: {
       range: {
-        from: new Date(),
-        to: new Date(),
+        from: checkin ? new Date(checkin) : new Date(),
+        to: checkout ? new Date(checkout) : new Date(),
       },
       guests: {
-        adults: 1,
-        children: 0,
+        adults: adultos ?? 1,
+        children: criancas ?? 0,
       },
     },
   })

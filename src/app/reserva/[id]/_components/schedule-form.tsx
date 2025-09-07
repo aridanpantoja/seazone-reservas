@@ -22,13 +22,32 @@ import { cn } from '@/lib/utils'
 import { Property } from '@/type/property.type'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
+import { LoadingButton } from '@/components/loading-button'
 
-type ScheduleFormProps = Property
+type ScheduleFormProps = {
+  property: Property
+  checkin?: string
+  checkout?: string
+  adultos?: number
+  criancas?: number
+}
 
 export function ScheduleForm(props: ScheduleFormProps) {
-  const { id } = props
-  const { form, handleSubmit } = useScheduleForm({ propertyId: id })
-  const { range } = form.watch()
+  const { property, checkin, checkout, adultos, criancas } = props
+  const { form, handleSubmit } = useScheduleForm({
+    propertyId: property.id,
+    checkin,
+    checkout,
+    adultos,
+    criancas,
+  })
+
+  const {
+    watch,
+    formState: { isSubmitting },
+  } = form
+
+  const { range } = watch()
 
   return (
     <Form {...form}>
@@ -155,9 +174,9 @@ export function ScheduleForm(props: ScheduleFormProps) {
           )}
         />
 
-        <Button variant="outline" type="submit">
+        <LoadingButton variant="outline" type="submit" loading={isSubmitting}>
           Reservar
-        </Button>
+        </LoadingButton>
       </form>
     </Form>
   )

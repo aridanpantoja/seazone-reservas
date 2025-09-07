@@ -36,9 +36,7 @@ export type PropertiesFilters = {
   bedrooms?: number
   available?: boolean
   amenities?: string
-  location?: {
-    city?: string
-    state?: string
-  }
+  city?: string
+  state?: string
   type?: string
 }

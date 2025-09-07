@@ -213,6 +213,18 @@ body {
   letter-spacing: var(--tracking-normal);
 }
 
+.swiper-pagination-bullet {
+  width: 7px !important;
+  height: 7px !important;
+  background: var(--muted-foreground) !important;
+  scale: 0.9 !important;
+}
+
+.swiper-pagination-bullet-active {
+  color: var(--primary);
+  background: var(--primary) !important;
+  scale: 1 !important ;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
