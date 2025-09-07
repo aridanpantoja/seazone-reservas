@@ -2,8 +2,8 @@
 
 import { createBookingAction } from '@/actions/booking'
 import { scheduleFormSchema, ScheduleFormSchema } from '@/lib/validations'
-import { createBooking } from '@/services/bookings'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { addDays } from 'date-fns'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -11,28 +11,23 @@ type UseScheduleFormProps = {
   propertyId: number
   checkin?: string
   checkout?: string
-  adultos?: number
-  criancas?: number
+  guests?: number
 }
 
 export function useScheduleForm({
   propertyId,
   checkin,
   checkout,
-  adultos,
-  criancas,
+  guests,
 }: UseScheduleFormProps) {
   const form = useForm<ScheduleFormSchema>({
     resolver: zodResolver(scheduleFormSchema),
     defaultValues: {
       range: {
         from: checkin ? new Date(checkin) : new Date(),
-        to: checkout ? new Date(checkout) : new Date(),
+        to: checkout ? new Date(checkout) : addDays(new Date(), 2),
       },
-      guests: {
-        adults: adultos ?? 1,
-        children: criancas ?? 0,
-      },
+      guests: guests ?? 1,
     },
   })
 

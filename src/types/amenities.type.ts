@@ -1,4 +1,4 @@
-export type AmenitieType =
+export type AmenityType =
   | 'wifi'
   | 'ar-condicionado'
   | 'garagem'

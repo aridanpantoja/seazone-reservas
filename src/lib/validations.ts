@@ -1,29 +1,39 @@
 import { z } from 'zod'
 
-export const scheduleFormSchema = z.object({
-  range: z.object({
-    from: z.coerce
-      .date()
-      .min(
-        new Date(new Date().setDate(new Date().getDate() + 1)),
-        'A data de check-in deve ser maior ou igual que a data atual',
-      ),
-    to: z.coerce
-      .date()
-      .min(
-        new Date(),
-        'A data de check-out deve ser maior ou igual que a data atual',
-      ),
-  }),
-  guests: z.object({
-    adults: z.coerce
+export const scheduleFormSchema = z
+  .object({
+    range: z.object({
+      from: z.date({
+        required_error: 'A data de check-in é obrigatória.',
+      }),
+      to: z.date({
+        required_error: 'A data de check-out é obrigatória.',
+      }),
+    }),
+    guests: z.coerce
       .number()
-      .min(1, 'O número de adultos deve ser maior ou igual a 1'),
-    children: z.coerce
-      .number()
-      .min(0, 'O número de crianças deve ser maior ou igual a 0'),
-  }),
-})
+      .min(1, 'O número de hóspedes deve ser maior ou igual a 1'),
+  })
+  .refine(
+    (data) => {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return data.range.from >= today
+    },
+    {
+      message: 'A data de check-in não pode ser no passado.',
+      path: ['range', 'from'],
+    },
+  )
+  .refine(
+    (data) => {
+      return data.range.to > data.range.from
+    },
+    {
+      message: 'A data de check-out deve ser posterior à de check-in.',
+      path: ['range', 'to'],
+    },
+  )
 
 export type ScheduleFormSchema = z.infer<typeof scheduleFormSchema>
 

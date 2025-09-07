@@ -4,7 +4,7 @@ import { useScroll } from 'motion/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Icons } from '@/components/icons'
-import { MobileMenu } from '@/components/mobile-menu'
+import { SheetMenu } from '@/components/sheet-menu'
 import { WidthWrapper } from '@/components/width-wrapper'
 import { SearchForm } from './search-form'
 
@@ -43,7 +43,7 @@ export function Navbar() {
               <SearchForm expanded={!scrolled} />
             </div>
 
-            <MobileMenu />
+            <SheetMenu />
           </div>
         </nav>
       </WidthWrapper>

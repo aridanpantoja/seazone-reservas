@@ -12,9 +12,13 @@ export function formatCurrency(value: number) {
   }).format(value)
 }
 
-export function formatDateForURL(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${day}-${month}`
+export function generateGoogleMapsUrl(address: {
+  city?: string
+  state?: string
+}) {
+  const query = encodeURIComponent(
+    `${address.city || ''} - ${address.state || ''}`,
+  )
+
+  return `https://www.google.com/maps?q=${query}&output=embed`
 }

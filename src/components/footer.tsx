@@ -91,7 +91,7 @@ const LINKS = [
       },
     ],
   },
-]
+] as const
 
 export function Footer() {
   return (

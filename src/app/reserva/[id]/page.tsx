@@ -1,17 +1,25 @@
+import { ScheduleForm } from '@/components/schedule-form'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { WidthWrapper } from '@/components/width-wrapper'
+import { getPropertyById } from '@/services/properties'
+import { MapPin, Pin } from 'lucide-react'
 import type { Metadata, ResolvingMetadata } from 'next'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { getProperties, getPropertyById } from '@/services/properties'
-import type { Property } from '@/types/property.type'
-import { ScheduleForm } from './_components/schedule-form'
 
 type AccommodationPageProps = {
   params: Promise<{ id: number }>
   searchParams: Promise<{
     checkin?: string
     checkout?: string
-    adultos?: number
-    criancas?: number
+    hospedes?: number
   }>
 }
 
@@ -20,7 +28,7 @@ export default async function AccommodationPage({
   searchParams,
 }: AccommodationPageProps) {
   const { id } = await params
-  const { checkin, checkout, adultos, criancas } = await searchParams
+  const { checkin, checkout, hospedes } = await searchParams
 
   const property = await getPropertyById(id)
 
@@ -32,36 +40,55 @@ export default async function AccommodationPage({
     <WidthWrapper className="max-w-screen-xl">
       <main className="space-y-8 py-10">
         <section>
-          <h1 className="text-4xl font-bold">Reservar</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Reservar</h1>
         </section>
 
-        <section className="grid grid-cols-2 gap-8">
-          <div>
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <h2 className="text-lg font-bold">Detalhes da reserva</h2>
+        <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <ScheduleForm
+            property={property}
+            checkin={checkin}
+            checkout={checkout}
+            guests={hospedes}
+          />
 
-                <ScheduleForm
-                  property={property}
-                  checkin={checkin}
-                  checkout={checkout}
-                  adultos={adultos}
-                  criancas={criancas}
-                />
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="relative size-24 overflow-hidden rounded-lg">
+                    <Image
+                      src={property.images[0]}
+                      alt={property.title}
+                      width={256}
+                      height={256}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <CardTitle className="text-lg">{property.title}</CardTitle>
+                    <CardDescription className="flex items-center gap-1">
+                      <MapPin className="size-4" /> {property.location.city},{' '}
+                      {property.location.state},{property.location.country}
+                    </CardDescription>
+                    <p className="text-muted-foreground text-sm">
+                      {property.type}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </CardHeader>
 
-          <div className="bg-muted rounded-lg border p-4">
-            <h2 className="text-lg font-bold">Detalhes da reserva</h2>
+            <Separator />
 
-            <div className="flex flex-col gap-2">
-              <p>Check-in: {checkin}</p>
-              <p>Check-out: {checkout}</p>
-              <p>Adultos: {adultos}</p>
-              <p>Crianças: {criancas}</p>
-            </div>
-          </div>
+            <CardContent>
+              <div className="flex flex-col gap-2">
+                <p>Check-in: {checkin}</p>
+                <p>Check-out: {checkout}</p>
+                <p>Hóspedes: {hospedes}</p>
+              </div>
+            </CardContent>
+          </Card>
         </section>
       </main>
     </WidthWrapper>

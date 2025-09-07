@@ -1,13 +1,12 @@
-import { Amenitie } from '@/components/amenitie'
+import { Gallery } from '@/components/gallery'
+import { ScheduleCard } from '@/components/schedule-card'
+import { Amenity } from '@/components/amenity'
 import { ShareButton } from '@/components/share-button'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { generateGoogleMapsUrl } from '@/lib/utils'
+import { getProperties, getPropertyById } from '@/services/properties'
+import type { Property } from '@/types/property.type'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getProperties, getPropertyById } from '../../../services/properties'
-import type { Property } from '../../../types/property.type'
-import { Gallery } from './_components/gallery'
-import { ScheduleCard } from './_components/schedule-card'
 
 type AccommodationPageProps = {
   params: Promise<{ id: number }>
@@ -50,12 +49,12 @@ export default async function AccommodationPage({
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="flex-1 space-y-6">
           <div>
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-lg font-bold sm:text-xl">
               {property.type} em {property.location.city},{' '}
-              {property.location.state}
+              {property.location.state}, {property.location.country}
             </h2>
 
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {property.maxGuests} hóspedes &bull; {property.bedrooms} quartos
               &bull; {property.bathrooms} banheiros
             </p>
@@ -64,7 +63,28 @@ export default async function AccommodationPage({
           <div className="space-y-4">
             <h2 className="text-xl font-bold">Descrição</h2>
 
-            <p className="text-muted-foreground">Adicionar descrição</p>
+            <div className="text-muted-foreground space-y-2 text-sm">
+              <p>
+                Este imóvel oferece todo o conforto e praticidade que você
+                procura para viver bem. Com um design moderno e ambientes bem
+                distribuídos, ele proporciona uma excelente iluminação natural e
+                ventilação, criando um espaço aconchegante e funcional.
+                Localizado em uma região privilegiada, o imóvel está próximo a
+                comércios, escolas, supermercados e opções de lazer, garantindo
+                conveniência no dia a dia.
+              </p>
+
+              <p>
+                A sala ampla integra-se harmoniosamente à cozinha, oferecendo um
+                ambiente perfeito para receber amigos e familiares. Os
+                acabamentos de qualidade e o cuidado nos detalhes tornam o
+                espaço ainda mais agradável e acolhedor. Além disso, a área
+                externa conta com espaço para relaxar e aproveitar momentos ao
+                ar livre. Ideal para quem busca conforto, praticidade e
+                qualidade de vida, este imóvel é uma excelente oportunidade para
+                morar ou investir.
+              </p>
+            </div>
           </div>
 
           <div className="space-y-8">
@@ -73,7 +93,7 @@ export default async function AccommodationPage({
             <ul className="text-muted-foreground grid grid-cols-2 gap-6 sm:grid-cols-3">
               {property.amenities.slice(0, 6).map((amenity) => (
                 <li key={amenity} className="flex items-center gap-2">
-                  <Amenitie
+                  <Amenity
                     amenity={amenity}
                     iconClassName="size-6 text-2xl"
                     labelClassName="text-sm"
@@ -82,13 +102,25 @@ export default async function AccommodationPage({
                 </li>
               ))}
             </ul>
+          </div>
 
-            <Button
-              variant="outline"
-              className={cn(property.amenities.length <= 6 && 'hidden')}
-            >
-              Ver todas as comodidades
-            </Button>
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold">Localização</h2>
+
+            <div className="bg-muted flex h-56 items-center justify-center rounded-lg">
+              <iframe
+                allowFullScreen
+                className="h-full w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src={generateGoogleMapsUrl({
+                  city: property.location.city,
+                  state: property.location.state,
+                })}
+                style={{ border: 0 }}
+                title="Mapa do endereço"
+              />
+            </div>
           </div>
         </div>
 

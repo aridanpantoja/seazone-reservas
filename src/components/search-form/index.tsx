@@ -4,7 +4,7 @@ import { BRAZIL_STATES } from '@/constants/states'
 import { useSearchForm } from '@/hooks/use-search-form'
 import { cn } from '@/lib/utils'
 import { Search } from 'lucide-react'
-import { Amenitie } from '@/components/amenitie'
+import { Amenity } from '@/components/amenity'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -322,7 +322,7 @@ export function SearchForm({
                                 />
                               </FormControl>
                               <FormLabel className="text-sm font-normal">
-                                <Amenitie
+                                <Amenity
                                   amenity={item}
                                   showIcon={false}
                                   showLabel
