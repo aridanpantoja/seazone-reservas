@@ -1,5 +1,5 @@
-import { BASE_URL } from '@/lib/constants'
-import { getProperties } from '@/services/properties'
+import { BASE_URL } from '../lib/constants'
+import { getProperties } from '../services/properties'
 import type { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

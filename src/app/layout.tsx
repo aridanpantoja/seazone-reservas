@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@/assets/styles/globals.css'
 import { cn } from '@/lib/utils'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
 
 export const metadata: Metadata = {
   title: 'Seazone Reservas',
@@ -18,7 +20,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={cn('bg-background antialiased', inter.className)}>
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </div>
       </body>
     </html>
   )
