@@ -12,11 +12,12 @@ import {
 } from '@/components/ui/sheet'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Separator } from './ui/separator'
+import { Separator } from '@/components/ui/separator'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 const NAVBAR_LINKS = [
   { href: '/', label: 'Home', Icon: Home },
-  { href: '/busca', label: 'Buscar acomodações', Icon: Search },
+  { href: '/s', label: 'Buscar acomodações', Icon: Search },
 ] as const
 
 export function SheetMenu() {
@@ -57,6 +58,12 @@ export function SheetMenu() {
             </Link>
           ))}
         </ul>
+
+        <Separator />
+
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <ThemeToggle />
+        </div>
       </SheetContent>
     </Sheet>
   )

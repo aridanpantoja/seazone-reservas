@@ -1,16 +1,25 @@
-import { Gallery } from '@/components/gallery'
-import { ScheduleCard } from '@/components/schedule-card'
 import { Amenity } from '@/components/amenity'
+import { Gallery } from '@/components/gallery'
 import { ShareButton } from '@/components/share-button'
-import { generateGoogleMapsUrl } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { formatCurrency, generateGoogleMapsUrl } from '@/lib/utils'
 import { getProperties, getPropertyById } from '@/services/properties'
 import type { Property } from '@/types/property.type'
+import { format } from 'date-fns'
+import { Star } from 'lucide-react'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
 type AccommodationPageProps = {
   params: Promise<{ id: number }>
-  searchParams: Promise<{ checkin: string; checkout: string; hospedes: number }>
 }
 
 export async function generateStaticParams() {
@@ -22,21 +31,17 @@ export async function generateStaticParams() {
 
 export default async function AccommodationPage({
   params,
-  searchParams,
 }: AccommodationPageProps) {
   const { id } = await params
   const property = await getPropertyById(id)
-  const { checkin, checkout, hospedes } = await searchParams
 
   if (!property) {
     notFound()
   }
 
-  console.log(checkin, checkout, hospedes)
-
   return (
     <section className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-xl font-bold md:text-2xl">{property.title}</h1>
 
         <div className="flex items-center justify-center gap-2">
@@ -48,17 +53,43 @@ export default async function AccommodationPage({
 
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="flex-1 space-y-6">
-          <div>
-            <h2 className="text-lg font-bold sm:text-xl">
-              {property.type} em {property.location.city},{' '}
-              {property.location.state}, {property.location.country}
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold sm:text-xl">
+                {property.type} em {property.location.city},{' '}
+                {property.location.state}, {property.location.country}
+              </h2>
+
+              <p className="text-muted-foreground text-sm">
+                {property.maxGuests} hóspedes &bull; {property.bedrooms} quartos
+                &bull; {property.bathrooms} banheiros &bull; {property.sizeM2}{' '}
+                m²
+              </p>
+            </div>
+
+            <div className="flex items-center justify-center gap-1">
+              <Star className="text-primary size-6" fill="currentColor" />
+              <p className="text-muted-foreground font-medium">
+                {property.rating}
+              </p>
+              <p className="text-muted-foreground">({property.reviewsCount})</p>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-1">
+            <h2 className="text-xl font-bold">
+              Anfitrião: {property.host.name}
             </h2>
 
             <p className="text-muted-foreground text-sm">
-              {property.maxGuests} hóspedes &bull; {property.bedrooms} quartos
-              &bull; {property.bathrooms} banheiros
+              {property.host.superHost && 'Superhost'} &bull; Hospeda desde{' '}
+              {format(property.host.since, 'dd/MM/yyyy')}
             </p>
           </div>
+
+          <Separator />
 
           <div className="space-y-4">
             <h2 className="text-xl font-bold">Descrição</h2>
@@ -124,7 +155,24 @@ export default async function AccommodationPage({
           </div>
         </div>
 
-        <ScheduleCard {...property} />
+        <Card className="fixed inset-x-0 bottom-0 flex h-fit w-full flex-row flex-wrap items-center justify-between lg:sticky lg:top-24 lg:max-w-80 lg:flex-col lg:justify-center">
+          <CardHeader className="w-full flex-1 px-2 md:px-4 lg:flex-none lg:px-6">
+            <CardTitle className="text-base sm:text-xl">
+              <span className="font-bold underline">
+                {formatCurrency(property.pricePerNight)}
+              </span>{' '}
+              /noite
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
+              Hospedado por {property.host.name}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="w-fit px-2 md:px-4 lg:w-full lg:px-6">
+            <Button className="w-full" disabled={!property.isAvailable}>
+              {property.isAvailable ? 'Reserve' : 'Indisponível'}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </section>
   )
