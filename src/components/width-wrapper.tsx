@@ -7,7 +7,7 @@ type WidthWrapperProps = {
 
 export function WidthWrapper({ children, className }: WidthWrapperProps) {
   return (
-    <div className={cn('mx-auto max-w-7xl px-4 sm:px-6 lg:px-8', className)}>
+    <div className={cn('mx-auto px-4 sm:px-6 lg:px-8 2xl:px-24', className)}>
       {children}
     </div>
   )

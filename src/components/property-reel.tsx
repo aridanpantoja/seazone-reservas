@@ -40,14 +40,16 @@ export async function PropertyReel({
         )}
       </div>
 
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {properties.map((property) => (
           <Link
             key={property.id}
             href={`/acomodacoes/${property.id}`}
-            className="space-y-4"
+            className="space-y-3 overflow-hidden rounded-xl"
+            target="_blank"
+            aria-label={property.title}
           >
-            <div className="relative block w-full overflow-hidden rounded-lg">
+            <div className="relative block w-full overflow-hidden rounded-xl">
               <Image
                 src={property.images[0]}
                 alt={property.title}
@@ -66,14 +68,14 @@ export async function PropertyReel({
               </Badge>
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 p-1">
               <div className="flex items-start justify-between gap-1">
                 <h2 className="text-xs font-semibold tracking-[0.28px]">
                   {property.title}
                 </h2>
 
                 <div className="flex shrink-0 items-center justify-center gap-1 text-xs">
-                  <Star className="text-primary size-3" />
+                  <Star className="text-primary size-3" fill="currentColor" />
                   <span>
                     {property.rating} ({property.reviewsCount})
                   </span>

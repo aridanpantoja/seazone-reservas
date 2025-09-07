@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react'
 import { Icons } from '@/components/icons'
 import { MobileMenu } from '@/components/mobile-menu'
 import { WidthWrapper } from '@/components/width-wrapper'
+import { SearchForm } from './search-form'
 
-const SCROLL_THRESHOLD_INACTIVE = 80
-const SCROLL_THRESHOLD_ACTIVE = 160
+const SCROLL_THRESHOLD_INACTIVE = 20
+const SCROLL_THRESHOLD_ACTIVE = 50
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -29,7 +30,7 @@ export function Navbar() {
   return (
     <header
       data-scrolled={scrolled}
-      className="bg-muted data-[scrolled=true]:bg-muted/80 group sticky top-0 z-50 h-fit w-full transition-all data-[scrolled=true]:border-b data-[scrolled=true]:backdrop-blur-2xl"
+      className="bg-background data-[scrolled=true]:bg-background/60 group sticky top-0 z-50 h-fit w-full transition-all data-[scrolled=true]:border-b data-[scrolled=true]:shadow-xs data-[scrolled=true]:backdrop-blur-2xl"
     >
       <WidthWrapper>
         <nav className="relative flex h-24 w-full flex-wrap items-center justify-between gap-6 transition-all group-data-[scrolled=true]:h-18">
@@ -37,6 +38,10 @@ export function Navbar() {
             <Link aria-label="Home" href="/">
               <Icons.logo />
             </Link>
+
+            <div className="absolute left-1/2 -translate-x-1/2">
+              <SearchForm expanded={!scrolled} />
+            </div>
 
             <MobileMenu />
           </div>
