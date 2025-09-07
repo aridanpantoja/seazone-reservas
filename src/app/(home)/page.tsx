@@ -1,6 +1,5 @@
 import { PropertyReel } from '@/components/property-reel'
 import { WidthWrapper } from '@/components/width-wrapper'
-import Loading from './loading'
 
 export default async function Home() {
   return (
@@ -12,7 +11,9 @@ export default async function Home() {
             subtitle="Encontre a acomodação perfeita para você"
             link="/s?cidade=São Paulo"
             filters={{
-              state: 'SP',
+              location: {
+                city: 'São Paulo',
+              },
               _limit: 5,
             }}
           />
@@ -20,7 +21,7 @@ export default async function Home() {
           <PropertyReel
             title="Pra relaxar e curtir"
             subtitle="Aproveite o melhor do litoral com sua família"
-            link="/s?cidade=Pra relaxar e curtir"
+            link="/s?tipo=Sítio"
             filters={{
               type: 'Sítio',
               _limit: 5,

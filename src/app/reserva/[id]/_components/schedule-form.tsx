@@ -19,7 +19,7 @@ import {
 import { useScheduleForm } from '@/hooks/use-schedule-form'
 import { format, isValid } from 'date-fns'
 import { cn } from '@/lib/utils'
-import { Property } from '@/type/property.type'
+import { Property } from '@/types/property.type'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
 import { LoadingButton } from '@/components/loading-button'
@@ -53,95 +53,86 @@ export function ScheduleForm(props: ScheduleFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="grid grid-cols-2 gap-4"
+        className="grid grid-cols-1 gap-4"
       >
         <FormField
           control={form.control}
-          name="range.from"
+          name="range"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Check-in</FormLabel>
+              <FormLabel>Datas</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={'outline'}
-                      className={cn(
-                        'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
-                      )}
-                    >
-                      {field.value && isValid(field.value) ? (
-                        format(field.value, 'PPP')
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-2">
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'w-full pl-3 text-left font-normal',
+                          !field.value.from && 'text-muted-foreground',
+                        )}
+                      >
+                        {field.value.from ? (
+                          <span>
+                            {field.value.from?.toLocaleDateString('pt-BR', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        ) : (
+                          <span>Selecione uma data</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'w-full pl-3 text-left font-normal',
+                          !field.value.to && 'text-muted-foreground',
+                        )}
+                      >
+                        {field.value.to ? (
+                          <span>
+                            {field.value.to?.toLocaleDateString('pt-BR', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        ) : (
+                          <span>Selecione uma data</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </div>
+                  </div>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
-                    mode="single"
-                    selected={
-                      field.value && isValid(field.value)
-                        ? field.value
-                        : undefined
-                    }
+                    mode="range"
+                    selected={field.value}
+                    onSelect={field.onChange}
                     numberOfMonths={2}
-                    onSelect={field.onChange}
-                    disabled={(date) => date <= new Date('1900-01-01')}
-                    captionLayout="dropdown"
+                    showOutsideDays={false}
+                    disabled={(date) => date < new Date('1900-01-01')}
                   />
                 </PopoverContent>
               </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
-        <FormField
-          control={form.control}
-          name="range.to"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Check-out</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={'outline'}
-                      className={cn(
-                        'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
-                      )}
-                    >
-                      {field.value && isValid(field.value) ? (
-                        format(field.value, 'PPP')
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={
-                      field.value && isValid(field.value)
-                        ? field.value
-                        : undefined
-                    }
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date <= new Date('1900-01-01') || date <= range.from
-                    }
-                    captionLayout="dropdown"
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
+              {form.formState.errors.range?.to && (
+                <FormMessage>
+                  {form.formState.errors.range.to.message}
+                </FormMessage>
+              )}
+
+              {form.formState.errors.range?.from && (
+                <FormMessage>
+                  {form.formState.errors.range.from.message}
+                </FormMessage>
+              )}
             </FormItem>
           )}
         />

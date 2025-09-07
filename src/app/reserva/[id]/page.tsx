@@ -2,7 +2,7 @@ import { WidthWrapper } from '@/components/width-wrapper'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProperties, getPropertyById } from '@/services/properties'
-import type { Property } from '@/type/property.type'
+import type { Property } from '@/types/property.type'
 import { ScheduleForm } from './_components/schedule-form'
 
 type AccommodationPageProps = {

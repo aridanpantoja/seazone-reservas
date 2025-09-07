@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { getProperties } from '../services/properties'
-import type { PropertiesFilters, Property } from '../type/property.type'
+import type { PropertiesFilters, Property } from '../types/property.type'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { Check, CircleX, Star, X } from 'lucide-react'
@@ -66,7 +66,7 @@ export async function PropertyReel({
 
                 <Badge
                   variant={property.isAvailable ? 'secondary' : 'default'}
-                  className="absolute top-3 left-3"
+                  className="absolute top-3 left-3 z-30"
                 >
                   {property.isAvailable ? <Check /> : <X />}
                   {property.isAvailable ? 'Disponível' : 'Indisponível'}

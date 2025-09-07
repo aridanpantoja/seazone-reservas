@@ -12,7 +12,8 @@ type SearchPageProps = {
     quartos?: number
     banheiros?: number
     hospedes?: number
-    amenities?: string
+    comodidades?: string
+    disponivel?: boolean
   }>
 }
 
@@ -26,18 +27,22 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     quartos,
     banheiros,
     hospedes,
-    amenities,
+    comodidades,
+    disponivel,
   } = await searchParams
 
   const properties = await getProperties({
-    city: cidade,
-    state: estado,
+    guests: hospedes,
+    location: {
+      city: cidade,
+      state: estado,
+    },
     type: tipo,
     maxPrice: preco_max,
     minPrice: preco_min,
     bedrooms: quartos,
-    guests: hospedes,
-    amenities,
+    available: disponivel,
+    amenities: comodidades,
   })
 
   return (

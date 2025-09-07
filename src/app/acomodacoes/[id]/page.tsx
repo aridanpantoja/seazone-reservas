@@ -1,15 +1,13 @@
 import { Amenitie } from '@/components/amenitie'
+import { ShareButton } from '@/components/share-button'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Share2 } from 'lucide-react'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProperties, getPropertyById } from '../../../services/properties'
-import type { Property } from '../../../type/property.type'
+import type { Property } from '../../../types/property.type'
 import { Gallery } from './_components/gallery'
 import { ScheduleCard } from './_components/schedule-card'
-import { ShareButton } from '@/components/share-button'
-import AccommodationLoading from './loading'
 
 type AccommodationPageProps = {
   params: Promise<{ id: number }>

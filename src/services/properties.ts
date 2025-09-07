@@ -1,15 +1,10 @@
 import api from '../config/http'
-import type { Property, PropertiesFilters } from '../type/property.type'
+import type { Property, PropertiesFilters } from '../types/property.type'
 
 export async function getProperties(
   filters?: PropertiesFilters,
 ): Promise<Property[]> {
-  console.log(filters)
-
   const response = await api.get<Property[]>('/properties', { params: filters })
-
-  console.log(response)
-
   return response.data
 }
 

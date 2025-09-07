@@ -13,7 +13,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { Label } from '@/components/ui/label'
-import { Property } from '@/type/property.type'
+import { Property } from '@/types/property.type'
 
 export function ScheduleCard(property: Property) {
   const [date, setDate] = useState<DateRange | undefined>({

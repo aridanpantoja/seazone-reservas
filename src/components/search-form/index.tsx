@@ -4,9 +4,9 @@ import { BRAZIL_STATES } from '@/constants/states'
 import { useSearchForm } from '@/hooks/use-search-form'
 import { cn } from '@/lib/utils'
 import { Search } from 'lucide-react'
-import { Amenitie } from './amenitie'
-import { Button, buttonVariants } from './ui/button'
-import { Checkbox } from './ui/checkbox'
+import { Amenitie } from '@/components/amenitie'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog'
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -22,15 +22,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from './ui/form'
-import { Input } from './ui/input'
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select'
+} from '@/components/ui/select'
 
 export function SearchForm({
   className,

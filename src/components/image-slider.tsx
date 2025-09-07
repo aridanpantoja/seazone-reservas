@@ -22,7 +22,7 @@ export function ImageSlider({ urls }: ImageSliderProps) {
 
   return (
     <div className="group bg-muted relative aspect-square overflow-hidden rounded-xl">
-      <div className="pointer-events-none absolute inset-0 z-20 flex w-full items-center justify-between px-3 opacity-0 transition-opacity hover:opacity-100">
+      <div className="pointer-events-none absolute inset-0 z-50 flex w-full items-center justify-between px-3 opacity-0 transition-opacity group-hover:opacity-100">
         <Button
           size="icon"
           variant="outline"
@@ -31,7 +31,7 @@ export function ImageSlider({ urls }: ImageSliderProps) {
           aria-label="Imagem anterior"
           data-beginning={isBeginning}
           className={cn(
-            'pointer-events-auto absolute left-3 z-20 rounded-full data-[beginning=true]:hidden',
+            'pointer-events-auto absolute left-3 z-30 rounded-full data-[beginning=true]:hidden',
           )}
         >
           <ChevronLeft />
@@ -45,7 +45,7 @@ export function ImageSlider({ urls }: ImageSliderProps) {
           aria-label="Próxima imagem"
           data-end={isEnd}
           className={cn(
-            'pointer-events-auto absolute right-3 z-20 rounded-full data-[end=true]:hidden',
+            'pointer-events-auto absolute right-3 z-30 rounded-full data-[end=true]:hidden',
           )}
         >
           <ChevronRight />

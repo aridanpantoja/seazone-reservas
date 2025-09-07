@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Property } from '@/type/property.type'
+import { Property } from '@/types/property.type'
 import { LayoutGrid } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
