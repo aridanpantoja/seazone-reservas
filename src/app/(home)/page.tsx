@@ -1,7 +1,13 @@
 import { PropertyReel } from '@/components/property-reel'
 import { WidthWrapper } from '@/components/width-wrapper'
+import type { Metadata } from 'next'
 
-export default async function Home() {
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'Descubra as melhores acomodações para sua viagem',
+}
+
+export default function Home() {
   return (
     <main className="py-10">
       <WidthWrapper>
@@ -14,7 +20,6 @@ export default async function Home() {
               location: {
                 city: 'São Paulo',
               },
-              _limit: 5,
             }}
           />
 
@@ -24,7 +29,6 @@ export default async function Home() {
             link="/s?tipo=Sítio"
             filters={{
               type: 'Sítio',
-              _limit: 5,
             }}
           />
 
@@ -34,17 +38,15 @@ export default async function Home() {
             link="/s?preco_max=250"
             filters={{
               maxPrice: 250,
-              _limit: 5,
             }}
           />
 
           <PropertyReel
             title="Pra família toda"
             subtitle="Encontre a acomodação perfeita para você e sua família"
-            link="/s?hospedes=5"
+            link="/s?hospedes=8"
             filters={{
-              guests: 5,
-              _limit: 5,
+              guests: 8,
             }}
           />
         </div>

@@ -1,10 +1,10 @@
 'use client'
 
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { searchFormSchema, SearchFormSchema } from '@/lib/validations'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 const getValuesFromParams = (
   searchParams: URLSearchParams,
@@ -30,30 +30,24 @@ export function useSearchForm() {
 
   const isSearchPage = pathname === '/s'
 
-  const defaultValues = useMemo(() => {
-    return isSearchPage
-      ? getValuesFromParams(searchParams)
-      : {
-          guests: 1,
-          amenities: [],
-          type: '',
-          minPrice: undefined,
-          maxPrice: undefined,
-          bedrooms: undefined,
-          state: '',
-          city: '',
-          available: false,
-        }
-  }, [searchParams, isSearchPage])
-
   const form = useForm<SearchFormSchema>({
     resolver: zodResolver(searchFormSchema),
-    defaultValues,
+    defaultValues: {
+      city: '',
+      state: '',
+      guests: 1,
+      minPrice: 0,
+      maxPrice: 0,
+      bedrooms: 1,
+      available: false,
+      amenities: [],
+      type: '',
+    },
   })
 
   useEffect(() => {
     form.reset(getValuesFromParams(searchParams))
-  }, [searchParams, form])
+  }, [searchParams])
 
   const handleSearch = useCallback(
     (data: SearchFormSchema) => {

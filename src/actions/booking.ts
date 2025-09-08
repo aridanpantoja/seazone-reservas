@@ -36,20 +36,15 @@ export async function createBookingAction(
       customerEmail: 'john.doe@example.com',
     })
 
-    console.log(response)
-
     if (!response) {
       throw new Error('Erro ao criar reserva')
     }
-
-    console.log('Reserva criada com sucesso')
 
     return {
       success: true,
       message: 'Reserva criada com sucesso',
     }
-  } catch (error) {
-    console.error(error)
+  } catch {
     return {
       success: false,
       message: 'Erro ao criar reserva',

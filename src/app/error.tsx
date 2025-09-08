@@ -14,7 +14,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    toast.error(error.message)
+    toast.error('Ocorreu um erro ao carregar a página')
   }, [error])
 
   return (

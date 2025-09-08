@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { WidthWrapper } from '@/components/width-wrapper'
 import { getPropertyById } from '@/services/properties'
 import { CircleX, MapPin, Wallet } from 'lucide-react'
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -112,14 +112,11 @@ export default async function AccommodationPage({
   )
 }
 
-export async function generateMetadata(
-  { params }: AccommodationPageProps,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: AccommodationPageProps): Promise<Metadata> {
   const { id } = await params
   const property = await getPropertyById(id)
-
-  const previousImages = (await parent).openGraph?.images || []
 
   if (!property) {
     return {
@@ -128,9 +125,12 @@ export async function generateMetadata(
   }
 
   return {
-    title: property.title,
+    title: `Reservar ${property.title}`,
+    description: `${property.type} em ${property.location.city}, ${property.location.state}. ${property.maxGuests} hóspedes, ${property.bedrooms} quartos, ${property.bathrooms} banheiros.`,
     openGraph: {
-      images: [property.images[0], ...previousImages],
+      title: `Reservar ${property.title}`,
+      description: `${property.type} em ${property.location.city}, ${property.location.state}. ${property.maxGuests} hóspedes, ${property.bedrooms} quartos, ${property.bathrooms} banheiros.`,
+      images: [property.images[0]],
     },
   }
 }

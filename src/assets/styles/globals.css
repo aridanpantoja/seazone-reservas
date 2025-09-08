@@ -225,6 +225,20 @@ body {
   background: var(--primary) !important;
   scale: 1 !important ;
 }
+
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary-foreground);
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 14px;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;

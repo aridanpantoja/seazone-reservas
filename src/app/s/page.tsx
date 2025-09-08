@@ -1,6 +1,7 @@
 import { PropertyReel } from '@/components/property-reel'
 import { WidthWrapper } from '@/components/width-wrapper'
 import { getProperties } from '@/services/properties'
+import type { Metadata } from 'next'
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -15,6 +16,11 @@ type SearchPageProps = {
     comodidades?: string
     disponivel?: boolean
   }>
+}
+
+export const metadata: Metadata = {
+  title: 'Busca de acomodações',
+  description: 'Busque por acomodações',
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {

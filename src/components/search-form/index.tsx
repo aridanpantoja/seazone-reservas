@@ -161,9 +161,8 @@ export function SearchForm({
                     <FormControl>
                       <Input
                         type="number"
-                        min="1"
                         {...field}
-                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                        value={field.value ?? ''}
                       />
                     </FormControl>
                     <FormMessage />
@@ -182,9 +181,6 @@ export function SearchForm({
                         type="number"
                         placeholder="Mínimo de quartos"
                         {...field}
-                        onChange={(e) =>
-                          field.onChange(e.target.valueAsNumber || undefined)
-                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -199,14 +195,7 @@ export function SearchForm({
                   <FormItem>
                     <FormLabel>Preço Mín.</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="R$ 100"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(e.target.valueAsNumber || undefined)
-                        }
-                      />
+                      <Input type="number" placeholder="R$ 100" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
