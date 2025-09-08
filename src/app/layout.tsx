@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { Toaster } from '@/components/ui/sonner'
-import { BASE_URL } from '@/config/siteConfig'
+import { BASE_URL, siteConfig } from '@/config/siteConfig'
 import { Providers } from '@/providers'
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: `%s | Seazone`,
   },
   metadataBase: new URL(BASE_URL),
-  description: 'Seazone é uma plataforma de reservas de hospedagem online.',
+  description: siteConfig.description,
   keywords: ['Seazone', 'Reservas', 'Hospedagem', '', 'Pará', 'Front-End'],
   authors: [
     { name: 'Aridan Pantoja', url: 'https://github.com/aridanpantoja' },
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     url: BASE_URL,
     title: 'Seazone',
-    description: 'Seazone é uma plataforma de reservas de hospedagem online.',
-    siteName: 'Seazone',
+    description: siteConfig.description,
+    siteName: siteConfig.name,
     images: [
       {
         url: `${BASE_URL}/og-image.png`,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Seazone',
-    description: 'Seazone é uma plataforma de reservas de hospedagem online.',
+    description: siteConfig.description,
     images: [`${BASE_URL}/og-image.png`],
     creator: '@Iracema_ema',
   },

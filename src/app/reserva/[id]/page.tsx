@@ -1,4 +1,5 @@
 import { ScheduleForm } from '@/components/schedule-form'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,9 +10,10 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { WidthWrapper } from '@/components/width-wrapper'
 import { getPropertyById } from '@/services/properties'
-import { MapPin, Pin } from 'lucide-react'
+import { CircleX, MapPin, Wallet } from 'lucide-react'
 import type { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 type AccommodationPageProps = {
@@ -36,21 +38,31 @@ export default async function AccommodationPage({
     notFound()
   }
 
+  if (!property.isAvailable) {
+    return (
+      <WidthWrapper className="max-w-screen-lg">
+        <section className="flex min-h-64 flex-col items-center justify-center gap-4 text-center">
+          <CircleX className="text-primary size-10" />
+          <h2 className="text-muted-foreground text-base font-medium">
+            Desculpe, esta propriedade não está mais disponível para a reserva
+          </h2>
+
+          <Link href="/" className={buttonVariants()}>
+            Voltar para a página inicial
+          </Link>
+        </section>
+      </WidthWrapper>
+    )
+  }
+
   return (
-    <WidthWrapper className="max-w-screen-xl">
+    <WidthWrapper className="max-w-screen-lg">
       <main className="space-y-8 py-10">
         <section>
           <h1 className="text-2xl font-bold md:text-3xl">Reservar</h1>
         </section>
 
-        <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <ScheduleForm
-            property={property}
-            checkin={checkin}
-            checkout={checkout}
-            guests={hospedes}
-          />
-
+        <section>
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -68,12 +80,16 @@ export default async function AccommodationPage({
                   <div className="space-y-1">
                     <CardTitle className="text-lg">{property.title}</CardTitle>
                     <CardDescription className="flex items-center gap-1">
-                      <MapPin className="size-4" /> {property.location.city},{' '}
-                      {property.location.state},{property.location.country}
+                      <MapPin className="text-primary size-4" />{' '}
+                      {property.location.city}, {property.location.state},
+                      {property.location.country}
                     </CardDescription>
-                    <p className="text-muted-foreground text-sm">
-                      {property.type}
-                    </p>
+                    <div className="text-muted-foreground flex items-center gap-1">
+                      <Wallet className="text-primary size-4" />
+                      <p className="text-sm">
+                        R$ {property.pricePerNight} / noite
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -82,11 +98,12 @@ export default async function AccommodationPage({
             <Separator />
 
             <CardContent>
-              <div className="flex flex-col gap-2">
-                <p>Check-in: {checkin}</p>
-                <p>Check-out: {checkout}</p>
-                <p>Hóspedes: {hospedes}</p>
-              </div>
+              <ScheduleForm
+                property={property}
+                checkin={checkin}
+                checkout={checkout}
+                guests={hospedes}
+              />
             </CardContent>
           </Card>
         </section>

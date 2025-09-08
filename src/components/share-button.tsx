@@ -1,9 +1,9 @@
 'use client'
 
-import { Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+import { Share2 } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export function ShareButton() {
   const [copied, setCopied] = useState(false)
@@ -16,7 +16,7 @@ export function ShareButton() {
       setTimeout(() => {
         setCopied(false)
       }, 1000)
-    } catch (error) {
+    } catch {
       toast.error('Erro ao copiar URL')
     }
   }

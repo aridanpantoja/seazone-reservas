@@ -1,12 +1,14 @@
 'use client'
 
+import { LoadingButton } from '@/components/loading-button'
 import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -15,14 +17,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
 import { useScheduleForm } from '@/hooks/use-schedule-form'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { Property } from '@/types/property.type'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
-import { Calendar } from '@/components/ui/calendar'
-import { LoadingButton } from '@/components/loading-button'
 
 type ScheduleFormProps = {
   property: Property
@@ -31,10 +32,18 @@ type ScheduleFormProps = {
   guests?: number
 }
 
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(value)
+}
+
 export function ScheduleForm(props: ScheduleFormProps) {
   const { property, checkin, checkout, guests } = props
-  const { form, handleSubmit } = useScheduleForm({
-    propertyId: property.id,
+
+  const { form, handleSubmit, numberOfNights, totalPrice } = useScheduleForm({
+    property,
     checkin,
     checkout,
     guests,
@@ -48,7 +57,7 @@ export function ScheduleForm(props: ScheduleFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="grid grid-cols-1 gap-4"
+        className="grid grid-cols-1 gap-6 md:grid-cols-2"
       >
         <FormField
           control={form.control}
@@ -70,16 +79,16 @@ export function ScheduleForm(props: ScheduleFormProps) {
                     {field.value?.from ? (
                       field.value.to ? (
                         <>
-                          {format(field.value.from, 'LLL dd, y', {
+                          {format(field.value.from, 'dd/MM/y', {
                             locale: ptBR,
-                          })}{' '}
-                          -{' '}
-                          {format(field.value.to, 'LLL dd, y', {
+                          })}
+                          -
+                          {format(field.value.to, 'dd/MM/y', {
                             locale: ptBR,
                           })}
                         </>
                       ) : (
-                        format(field.value.from, 'LLL dd, y', { locale: ptBR })
+                        format(field.value.from, 'dd/MM/y', { locale: ptBR })
                       )
                     ) : (
                       <span>Selecione um período</span>
@@ -88,20 +97,17 @@ export function ScheduleForm(props: ScheduleFormProps) {
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
-                    initialFocus
                     mode="range"
                     defaultMonth={field.value.from}
                     selected={field.value}
                     onSelect={field.onChange}
                     numberOfMonths={2}
-                    // Desativa a seleção de datas anteriores a hoje
                     disabled={(date) =>
                       date < new Date(new Date().setHours(0, 0, 0, 0))
                     }
                   />
                 </PopoverContent>
               </Popover>
-              {/* Exibe mensagens de erro para o range como um todo ou campos específicos */}
               <FormMessage />
             </FormItem>
           )}
@@ -118,8 +124,7 @@ export function ScheduleForm(props: ScheduleFormProps) {
                   type="number"
                   placeholder="Número de hóspedes"
                   {...field}
-                  // O Zod já faz o 'coerce', mas é boa prática garantir o tipo number
-                  onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
                   min={1}
                 />
               </FormControl>
@@ -128,7 +133,32 @@ export function ScheduleForm(props: ScheduleFormProps) {
           )}
         />
 
-        <LoadingButton variant="outline" type="submit" loading={isSubmitting}>
+        {numberOfNights > 0 && (
+          <div className="bg-muted/20 mt-4 space-y-4 rounded-lg border p-4 md:col-span-2">
+            <h3 className="text-lg font-semibold">Resumo da Reserva</h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <p className="text-muted-foreground">
+                  {formatCurrency(property.pricePerNight)} x {numberOfNights}{' '}
+                  {numberOfNights > 1 ? 'noites' : 'noite'}
+                </p>
+                <p>{formatCurrency(totalPrice)}</p>
+              </div>
+              <Separator />
+              <div className="flex items-center justify-between font-bold">
+                <p>Total</p>
+                <p>{formatCurrency(totalPrice)}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <LoadingButton
+          type="submit"
+          className="md:col-span-2"
+          loading={isSubmitting}
+          disabled={isSubmitting || numberOfNights === 0}
+        >
           Reservar
         </LoadingButton>
       </form>

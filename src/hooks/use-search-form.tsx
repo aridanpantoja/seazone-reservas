@@ -53,7 +53,7 @@ export function useSearchForm() {
 
   useEffect(() => {
     form.reset(getValuesFromParams(searchParams))
-  }, [searchParams])
+  }, [searchParams, form])
 
   const handleSearch = useCallback(
     (data: SearchFormSchema) => {

@@ -1,7 +1,7 @@
 import { Amenity } from '@/components/amenity'
 import { Gallery } from '@/components/gallery'
 import { ShareButton } from '@/components/share-button'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -15,7 +15,8 @@ import { getProperties, getPropertyById } from '@/services/properties'
 import type { Property } from '@/types/property.type'
 import { format } from 'date-fns'
 import { Star } from 'lucide-react'
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 type AccommodationPageProps = {
@@ -168,9 +169,18 @@ export default async function AccommodationPage({
             </CardDescription>
           </CardHeader>
           <CardContent className="w-fit px-2 md:px-4 lg:w-full lg:px-6">
-            <Button className="w-full" disabled={!property.isAvailable}>
-              {property.isAvailable ? 'Reserve' : 'Indisponível'}
-            </Button>
+            <Link
+              className={buttonVariants({
+                className: 'w-full',
+              })}
+              href={`/reserva/${property.id}`}
+            >
+              Verificar disponibilidade
+            </Link>
+
+            <span className="text-muted-foreground mt-2 hidden text-center text-xs lg:block">
+              Você ainda não será cobrado
+            </span>
           </CardContent>
         </Card>
       </div>
@@ -178,14 +188,11 @@ export default async function AccommodationPage({
   )
 }
 
-export async function generateMetadata(
-  { params }: AccommodationPageProps,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: AccommodationPageProps): Promise<Metadata> {
   const { id } = await params
   const property = await getPropertyById(id)
-
-  const previousImages = (await parent).openGraph?.images || []
 
   if (!property) {
     return {
@@ -195,8 +202,11 @@ export async function generateMetadata(
 
   return {
     title: property.title,
+    description: `${property.type} em ${property.location.city}, ${property.location.state}. ${property.maxGuests} hóspedes, ${property.bedrooms} quartos, ${property.bathrooms} banheiros.`,
     openGraph: {
-      images: [property.images[0], ...previousImages],
+      title: property.title,
+      description: `${property.type} em ${property.location.city}, ${property.location.state}. ${property.maxGuests} hóspedes, ${property.bedrooms} quartos, ${property.bathrooms} banheiros.`,
+      images: [property.images[0]],
     },
   }
 }

@@ -2,16 +2,14 @@
 
 import { createBooking } from '@/services/bookings'
 import { scheduleFormSchema, ScheduleFormSchema } from '@/lib/validations'
+import type { Property } from '@/types/property.type'
 
 export async function createBookingAction(
   data: ScheduleFormSchema,
-  propertyId: number,
+  property: Property,
 ) {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
     const parsedData = await scheduleFormSchema.safeParse(data)
-
-    console.log('parsedData', parsedData.error?.message)
 
     if (!parsedData.success) {
       return {
@@ -20,15 +18,20 @@ export async function createBookingAction(
       }
     }
 
-    console.log(parsedData.data)
-
     const { range, guests } = parsedData.data
 
+    if (guests > property.maxGuests) {
+      return {
+        success: false,
+        message: 'Número de hóspedes é maior que o máximo de hóspedes',
+      }
+    }
+
     const response = await createBooking({
-      propertyId,
+      propertyId: property.id,
       checkIn: range.from.toISOString(),
       checkOut: range.to.toISOString(),
-      guests: guests.adults + guests.children,
+      guests: guests,
       customerName: 'John Doe',
       customerEmail: 'john.doe@example.com',
     })

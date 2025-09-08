@@ -24,7 +24,7 @@ export function SheetMenu() {
   const [open, setOpen] = useState(false)
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
           <Menu />
@@ -61,7 +61,7 @@ export function SheetMenu() {
 
         <Separator />
 
-        <div className="mt-auto flex flex-col gap-2 p-4">
+        <div className="mt-auto flex flex-col gap-2 p-6">
           <ThemeToggle />
         </div>
       </SheetContent>

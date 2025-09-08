@@ -1,25 +1,25 @@
-import { cn } from '../lib/utils'
-import type { LucideProps, LucideIcon } from 'lucide-react'
+import { AmenityType } from '@/types/amenities.type'
+import type { LucideIcon } from 'lucide-react'
 import {
-  Wifi,
-  Tv,
-  Car,
-  CookingPot,
-  WashingMachine,
-  Snowflake,
-  Cat,
-  Heater,
-  FlameKindling,
   Bath,
-  Sun,
+  Car,
+  Cat,
+  CookingPot,
   Dumbbell,
   Flame,
-  WavesLadder,
+  FlameKindling,
+  Heater,
   Hotel,
   Plus,
+  Snowflake,
+  Sun,
+  Tv,
+  WashingMachine,
+  WavesLadder,
+  Wifi,
 } from 'lucide-react'
 import React from 'react'
-import { AmenityType } from '@/types/amenities.type'
+import { cn } from '../lib/utils'
 
 type AmenityProps = {
   amenity: AmenityType | string

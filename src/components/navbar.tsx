@@ -1,11 +1,11 @@
 'use client'
 
-import { useScroll } from 'motion/react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { Icons } from '@/components/icons'
 import { SheetMenu } from '@/components/sheet-menu'
 import { WidthWrapper } from '@/components/width-wrapper'
+import { useScroll } from 'motion/react'
+import Link from 'next/link'
+import { Suspense, useEffect, useState } from 'react'
 import { SearchForm } from './search-form'
 
 const SCROLL_THRESHOLD_INACTIVE = 20
@@ -40,7 +40,13 @@ export function Navbar() {
             </Link>
 
             <div className="static left-1/2 ml-auto translate-x-0 lg:absolute lg:-translate-x-1/2">
-              <SearchForm expanded={!scrolled} />
+              <Suspense
+                fallback={
+                  <div className="bg-muted h-10 w-32 animate-pulse rounded-full" />
+                }
+              >
+                <SearchForm expanded={!scrolled} />
+              </Suspense>
             </div>
 
             <SheetMenu />

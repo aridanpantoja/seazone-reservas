@@ -31,7 +31,7 @@ export default async function Home() {
           <PropertyReel
             title="Pra caber no seu bolso"
             subtitle="Aproveite as ofertas da temporada"
-            link="/s?maxPrice=250"
+            link="/s?preco_max=250"
             filters={{
               maxPrice: 250,
               _limit: 5,
@@ -41,7 +41,7 @@ export default async function Home() {
           <PropertyReel
             title="Pra família toda"
             subtitle="Encontre a acomodação perfeita para você e sua família"
-            link="/s?maxGuests=5"
+            link="/s?hospedes=5"
             filters={{
               guests: 5,
               _limit: 5,

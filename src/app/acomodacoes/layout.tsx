@@ -6,10 +6,8 @@ export default function AccommodationLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="py-10">
-        <WidthWrapper className="max-w-screen-xl">{children}</WidthWrapper>
-      </div>
-    </div>
+    <main className="py-10">
+      <WidthWrapper className="max-w-screen-xl">{children}</WidthWrapper>
+    </main>
   )
 }

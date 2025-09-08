@@ -25,7 +25,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     preco_min,
     preco_max,
     quartos,
-    banheiros,
     hospedes,
     comodidades,
     disponivel,
